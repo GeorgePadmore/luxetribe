@@ -49,11 +49,20 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
+        $rules = [
             'name' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'regex:/(^[A-Za-z0-9]+$)+/', 'max:100', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+            'password' => ['required', 'regex:/^(?=.{6,}$)(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9])(?=.*?\W).*$/', 'confirmed'],
+        ];
+
+        $customMessages = [
+            'required' => 'The :attribute field is required.',
+            'username.regex' => 'The username can only allow numbers and alphabets. Kindly check and try again',
+            'password.regex' => 'The provided password must contain at least 1 uppercase letter, 1 lowercase letter, 1 symbol and 1 number with a minimum length of 6 characters.'
+        ];
+
+        return Validator::make($data, $rules, $customMessages);
     }
 
     /**
@@ -66,8 +75,10 @@ class RegisterController extends Controller
     {
         return User::create([
             'name' => $data['name'],
+            'username' => $data['username'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
     }
+    
 }
