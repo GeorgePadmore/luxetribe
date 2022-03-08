@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Models\BioData;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -53,7 +54,11 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'username' => ['required', 'regex:/(^[A-Za-z0-9]+$)+/', 'max:100', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'regex:/^(?=.{6,}$)(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9])(?=.*?\W).*$/', 'confirmed'],
+            'password' => ['required', 'regex:/^(?=.{6,}$)(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9])(?=.*?\W).*$/'],
+            'dob'=> ['required', 'date', 'before:today'],
+            "nationality" => 'required|string|max:200',
+            "mobile_number" => 'required|string|max:100',
+            "bio" => 'string|max:10000'
         ];
 
         $customMessages = [
@@ -80,5 +85,21 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
     }
-    
+
+    /**
+     * Create bio info for a user instance after a valid registration.
+     *
+     * @param  array  $data
+     * @return \App\Models\User
+     */
+    protected function createBio(array $data, $user_id)
+    {
+        return BioData::create([
+            'dob' => $data['dob'],
+            'nationality' => $data['nationality'],
+            'mobile_number' => $data['mobile_number'],
+            'bio' => $data['bio'],
+            'user_id' => $user_id
+        ]);
+    }
 }

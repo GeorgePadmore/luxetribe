@@ -1,73 +1,63 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-24">
+    <!-- form -->
+    <div class="pt-12 w-full">
+        <p class="font-semibold text-3xl md:w-1/2 py-10">Welcome Back!</p>
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
+        <form method="POST" action="{{ route('login') }}">
+            @csrf
+            <!-- form fields -->
 
-                        <div class="row mb-3">
-                            <label for="username" class="col-md-4 col-form-label text-md-end">{{ __('Username') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autofocus>
-
-                                @error('username')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
-
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-                    </form>
+            @if (session('status'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('status') }}
                 </div>
+            @endif
+
+            <div class="grid grid-cols-1 pt-6 gap-x-6 gap-y-4">
+                <input type="text" placeholder="Username" class="border rounded-lg px-4 py-3 outline-none @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autofocus>
+                @error('username')
+                    <span class="invalid-feedback" role="alert" style="color: red;">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+
+                <input type="password" placeholder="Password" class="border rounded-lg px-4 py-3 outline-none @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+
+                @error('password')
+                    <span class="invalid-feedback" role="alert" style="color: red;">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+
+                <button class="py-3 bg-[#FBB3C1] rounded-lg font-bold">
+                    Login
+                </button>
             </div>
+
+            <p class="text-gray-400 py-4 font-semibold">Don't have an account? <a href="{{ route('register') }}" class="text-gray-800 cursor-pointer">Register</a></p>
+            <p class="text-gray-400 font-semibold">Forgot Password? <a href="#" class="text-gray-800 cursor-pointer">Reset Password</a></p>
+        </form>
+    </div>
+
+    <!-- images -->
+    <div
+        class="hidden md:grid grid-rows-4 w-full h-full grid-cols-3 pt-16 gap-10 grid-flow-col m-10 place-self-end">
+        <div></div>
+        <div class="row-span-3 z-10 col-span-2 flex items-start justify-end">
+            <img src="https://booking.luxetribes.com/images/background/back-8.jpeg" class="rounded-xl" alt="" />
+        </div>
+        <div class="row-span-3 z-10 flex flex-col justify-center gap-y-10">
+            <img src="https://booking.luxetribes.com/images/background/back-7.png"
+                class="object-cover rounded-lg h-auto w-auto rounded-lg" alt="" />
+            <img src="https://booking.luxetribes.com/images/background/back-6.jpeg"
+                class="object-cover h-auto w-auto rounded-xl" alt="" />
+        </div>
+        <div class="absolute right-0 h-full rounded-l-xl bg-gray-200 opacity-50 w-2/5">
         </div>
     </div>
+
 </div>
 @endsection

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class BioInfomationTable extends Migration
+class BioDataTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class BioInfomationTable extends Migration
      */
     public function up()
     {
-        Schema::create('bio_info', function (Blueprint $table) {
+        Schema::create('bio_data', function (Blueprint $table) {
             $table->id();
             $table->string('dob');
             $table->string('nationality');
             $table->string('mobile_number');
-            $table->string('bio');
+            $table->text('bio');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
@@ -34,6 +34,6 @@ class BioInfomationTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bio_info');
+        Schema::dropIfExists('bio_data');
     }
 }
